@@ -180,83 +180,44 @@ export default function CodingActivity() {
     }
 
     async function loadGithub() {
-      setLoadState((state) => ({ ...state, github: "loading" }));
+      setLoadState((state) => ({ ...state, github: 'loading' }));
 
       try {
-        const profileResponse = await fetch(
-          "https://api.github.com/users/Rogerjaden"
-        );
+        // In production, point this to the separate Render Web Service.
+        // Local development defaults to the local Node API.
+        const githubApiUrl = import.meta.env.VITE_GITHUB_API_URL ||
+          'http://localhost:3001/api/github-stats';
+        const response = await fetch(githubApiUrl);
 
-        if (!profileResponse.ok) {
-          throw new Error(`GitHub profile request failed: ${profileResponse.status}`);
+        if (!response.ok) {
+          throw new Error(`GitHub stats API returned ${response.status}`);
         }
 
-        const profile = await profileResponse.json();
-        const repos = [];
-        let page = 1;
-
-        while (true) {
-          const response = await fetch(
-            `https://api.github.com/users/Rogerjaden/repos?type=owner&per_page=100&page=${page}`
-          );
-
-          if (!response.ok) {
-            throw new Error(`GitHub repositories request failed: ${response.status}`);
-          }
-
-          const batch = await response.json();
-          repos.push(...batch);
-
-          if (batch.length < 100) break;
-          page++;
+        const data = await response.json();
+        if (
+          !Number.isFinite(Number(data.repos)) ||
+          !Number.isFinite(Number(data.followers)) ||
+          !Array.isArray(data.languages)
+        ) {
+          throw new Error('Invalid GitHub statistics response');
         }
-
-        const languageCounts = {};
-
-        repos.forEach((repo) => {
-          if (repo.language) {
-            languageCounts[repo.language] =
-              (languageCounts[repo.language] || 0) + 1;
-          }
-        });
-
-        const languages = Object.entries(languageCounts)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 6)
-          .map(([name]) => name);
-
-        const commitResults = await Promise.all(
-          repos.map(async (repo) => {
-            const response = await fetch(
-              `https://api.github.com/repos/${repo.full_name}/commits?author=Rogerjaden&per_page=100`
-            );
-
-            if (!response.ok) {
-              console.warn(`Could not fetch commits for ${repo.full_name}`);
-              return 0;
-            }
-
-            const data = await response.json();
-            return data.length;
-          })
-        );
 
         if (cancelled) return;
 
         setGithub({
-          repos: profile.public_repos,
-          followers: profile.followers,
-          commits: commitResults.reduce((sum, count) => sum + count, 0),
-          languages,
+          repos: Number(data.repos),
+          followers: Number(data.followers),
+          commits: Number(data.commits ?? 0),
+          languages: data.languages,
         });
 
-        setLoadState((state) => ({ ...state, github: "ready" }));
+        setLoadState((state) => ({ ...state, github: 'ready' }));
       } catch (error) {
-        console.error("GitHub statistics failed:", error);
+        console.error('GitHub statistics failed:', error);
 
         if (cancelled) return;
 
-        setLoadState((state) => ({ ...state, github: "error" }));
+        setLoadState((state) => ({ ...state, github: 'error' }));
       }
     }
 
@@ -435,7 +396,7 @@ export default function CodingActivity() {
         </div>
 
         <p className="activity-footnote">
-          GITHUB DATA VIA SECURE VERCEL API · LEETCODE STATS
+          GITHUB DATA VIA CACHED API · LEETCODE STATS
           VIA PUBLIC PROVIDER
         </p>
 
