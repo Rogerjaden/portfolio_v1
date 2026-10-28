@@ -185,8 +185,9 @@ export default function CodingActivity() {
       try {
         // In production, point this to the separate Render Web Service.
         // Local development defaults to the local Node API.
-        const githubApiUrl = import.meta.env.VITE_GITHUB_API_URL ||
-          'http://localhost:3001/api/github-stats';
+
+        const githubApiUrl = import.meta.env.VITE_GITHUB_API_URL;
+
         const response = await fetch(githubApiUrl);
 
         if (!response.ok) {
