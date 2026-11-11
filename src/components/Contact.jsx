@@ -21,7 +21,7 @@ export default function Contact() {
         </div>
 
         <a
-          href="/resume.pdf"
+          href="/Resume_RogerJaden.pdf"
           download="Roger-Jaden-Resume.pdf"
           className="resume-download-btn"
         >

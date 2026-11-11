@@ -11,7 +11,7 @@ export const PROFILE = {
   linkedin: 'https://www.linkedin.com/in/rogerjaden384',
   github: 'https://github.com/Rogerjaden',
   leetcode: 'https://leetcode.com/Rogerjaden',
-  resume: '/resume.pdf',
+  resume: '/Resume_RogerJaden.pdf',
 };
 
 export const STACK = 'JAVA · SPRING BOOT · SPRING SECURITY · REST APIS · POSTGRESQL · MYSQL · REACT · DOCKER · JWT · REDIS · KAFKA · PYTHON · PYTORCH · ';
