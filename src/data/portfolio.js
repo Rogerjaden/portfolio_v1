@@ -14,7 +14,7 @@ export const PROFILE = {
   resume: '/Resume_RogerJaden.pdf',
 };
 
-export const STACK = 'JAVA · SPRING BOOT · SPRING SECURITY · REST APIS · POSTGRESQL · MYSQL · REACT · DOCKER · JWT · REDIS · KAFKA · PYTHON · PYTORCH · ';
+export const STACK = 'JAVA · SPRING BOOT · SPRING SECURITY · REST APIS · POSTGRESQL · MYSQL · REACT · DOCKER · JWT · REDIS · KAFKA · PYTHON · PYTORCH · FASTAPI · COMPUTER VISION · DEEP LEARNING';
 
 export const SNIPPETS = [
   '@RestController',
@@ -104,7 +104,7 @@ export const PROJECTS = [
 
 export const SKILLS = [
   ['Languages', 'java, javascript, python, sql'],
-  ['Backend', 'spring boot, spring data jpa, hibernate, spring security, rest apis, jwt'],
+  ['Backend', 'spring boot, fastapi, hibernate, spring security, rest apis, jwt'],
   ['Databases & messaging', 'mysql, postgresql, h2, redis, kafka '],
   ['Frontend', 'react, vite, html, css, responsive UI'],
   ['Tools & deployment', 'git, github, maven, postman, docker, kubernetes, render, aws, vercel'],
